@@ -1,6 +1,6 @@
 FROM alpine
 MAINTAINER izotoff <izotoff@gmail.com>
-ENV NGINX_VERSION nginx-1.9.3
+ENV NGINX_VERSION nginx-1.9.4
 RUN apk --update add openssl-dev pcre-dev zlib-dev wget build-base && \
     mkdir -p /tmp/src && \
     cd /tmp/src && \
@@ -20,11 +20,10 @@ RUN apk --update add openssl-dev pcre-dev zlib-dev wget build-base && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/*
 
-COPY pass.txt cert.key cert.crt nginx.conf /etc/nginx/conf/
+COPY nginx.* /etc/nginx/conf/
 
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 VOLUME ["/var/log/nginx"]
 WORKDIR /etc/nginx
