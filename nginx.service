@@ -1,0 +1,12 @@
+[Unit]
+Description=Nginx service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker rm nginx1
+ExecStart=/usr/bin/docker run --name nginx1 -p 80:80 -p 443:443 izotoff/mynginx
+ExecStop=/usr/bin/docker stop nginx1
+
+[Install]
+WantedBy=multi-user.target
