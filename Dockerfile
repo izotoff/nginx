@@ -1,6 +1,7 @@
 FROM alpine
 MAINTAINER izotoff <izotoff@gmail.com>
 ENV NGINX_VERSION nginx-1.9.4
+RUN echo http://mirror.yandex.ru/mirrors/alpine/v3.2/main > /etc/apk/repositories
 RUN apk --update add openssl-dev pcre-dev zlib-dev wget build-base && \
     mkdir -p /tmp/src && \
     cd /tmp/src && \
@@ -16,7 +17,8 @@ RUN apk --update add openssl-dev pcre-dev zlib-dev wget build-base && \
         --sbin-path=/usr/local/sbin/nginx && \
     make && \
     make install && \
-    apk del build-base && \
+    apk del build-base openssl-dev pcre-dev zlib-dev wget && \
+    apk add pcre && \
     rm -rf /tmp/src && \
     rm -rf /var/cache/apk/*
 
